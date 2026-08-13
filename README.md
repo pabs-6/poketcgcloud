@@ -108,12 +108,25 @@ Si tu trial de Railway ha terminado, necesitas el plan **Hobby (~5 $/mes)** o us
    - **Build Command:** `npm install && npm run build -w server`
    - **Start Command:** `npm run start -w server`
    - **Plan:** Free
-4. Variables de entorno (Environment):
+4. Variables de entorno (Environment) — **obligatorias** en Render → tu servicio → **Environment**:
+
+| Variable | Ejemplo | Notas |
+|----------|---------|--------|
+| `MONGODB_URI` | `mongodb+srv://user:pass@cluster0.xxxxx.mongodb.net/pokebinder?retryWrites=true&w=majority` | Copia **solo la URL** desde Atlas → Connect → Drivers. Debe empezar por `mongodb+srv://` |
+| `JWT_SECRET` | `un-secreto-largo-aleatorio-min-8-chars` | Render puede generarlo con "Generate" |
+| `CORS_ORIGIN` | `https://tu-app.vercel.app` | URL exacta de Vercel, sin `/` final |
+| `NODE_ENV` | `production` | |
+| `JWT_EXPIRES_IN` | `7d` | |
+| `POKEMON_TCG_API_KEY` | *(opcional)* | |
+| `GOOGLE_CLIENT_ID` | *(opcional)* | |
+
+> **Error `Invalid scheme, expected mongodb://`:** `MONGODB_URI` está vacía, mal escrita o es un placeholder. Pega el connection string real de Atlas (sin comillas, sin `MONGODB_URI=` delante).
+
+En **MongoDB Atlas → Network Access**, permite `0.0.0.0/0` para que Render pueda conectar.
 
 ```env
-PORT=10000
 NODE_ENV=production
-MONGODB_URI=mongodb+srv://...
+MONGODB_URI=mongodb+srv://usuario:contraseña@cluster0.xxxxx.mongodb.net/pokebinder?retryWrites=true&w=majority
 JWT_SECRET=<genera-un-secreto-seguro>
 JWT_EXPIRES_IN=7d
 POKEMON_TCG_API_KEY=<tu-api-key>

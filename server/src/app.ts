@@ -15,17 +15,22 @@ import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 const app = express();
 const corsOrigins = parseCorsOrigins(env.CORS_ORIGIN);
 
-app.use(helmet());
 app.use(
   cors({
     origin(origin, callback) {
       if (isCorsOriginAllowed(origin, corsOrigins)) {
-        callback(null, true);
+        callback(null, origin ?? true);
       } else {
+        console.warn(`CORS blocked origin: ${origin ?? '(none)'}`);
         callback(null, false);
       }
     },
     credentials: true,
+  })
+);
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
   })
 );
 app.use(express.json());

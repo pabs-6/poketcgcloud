@@ -21,6 +21,8 @@ services:
         value: 7d
       - key: CORS_ORIGIN
         sync: false
+        # En Render Dashboard → Environment, pon:
+        # https://pokebinder-tcg.vercel.app
       - key: MONGODB_URI
         sync: false
       - key: JWT_SECRET

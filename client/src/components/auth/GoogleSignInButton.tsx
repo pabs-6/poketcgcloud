@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GoogleLogin, type CredentialResponse } from '@react-oauth/google';
 import { GoogleIcon } from '@/components/icons/Icons';
@@ -11,6 +10,7 @@ interface GoogleSignInButtonProps {
 }
 
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID?.trim() ?? '';
+const GOOGLE_BUTTON_WIDTH = 240;
 
 export function isGoogleConfigured(): boolean {
   return clientId.length > 0;
@@ -18,16 +18,6 @@ export function isGoogleConfigured(): boolean {
 
 export function GoogleSignInButton({ onSuccess, onError, loading }: GoogleSignInButtonProps) {
   const { t, i18n } = useTranslation();
-  const googleHostRef = useRef<HTMLDivElement>(null);
-
-  const triggerGoogleLogin = () => {
-    const host = googleHostRef.current;
-    if (!host) return;
-    const googleBtn =
-      host.querySelector<HTMLElement>('div[role="button"]') ??
-      host.querySelector<HTMLElement>('iframe');
-    googleBtn?.click();
-  };
 
   if (!isGoogleConfigured()) {
     return (
@@ -56,41 +46,15 @@ GOOGLE_CLIENT_ID=tu-id.apps.googleusercontent.com`}
   }
 
   return (
-    <div className="relative flex justify-center">
+    <div className="relative flex justify-center" style={{ width: GOOGLE_BUTTON_WIDTH, height: 40 }}>
       <div
-        ref={googleHostRef}
-        className="absolute -left-[9999px] h-px w-px overflow-hidden opacity-0"
-        aria-hidden="true"
-      >
-        <GoogleLogin
-          onSuccess={(response: CredentialResponse) => {
-            if (response.credential) {
-              void onSuccess(response.credential);
-            } else {
-              onError?.(t('auth.googleNoCredential'));
-            }
-          }}
-          onError={() => onError?.(t('auth.googleConnectionError'))}
-          theme="outline"
-          size="medium"
-          shape="rectangular"
-          text="continue_with"
-          width={240}
-          locale={i18n.language.startsWith('en') ? 'en' : 'es'}
-        />
-      </div>
-
-      <button
-        type="button"
-        disabled={loading}
-        onClick={triggerGoogleLogin}
         className={cn(
-          'inline-flex items-center gap-2 rounded-lg border border-poke-gray-200 dark:border-poke-gray-600',
-          'bg-transparent px-3 py-1.5 text-xs font-medium text-poke-gray-700 dark:text-poke-gray-200',
-          'hover:bg-poke-gray-50 dark:hover:bg-poke-gray-800/60',
-          'transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
-          'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-poke-red'
+          'absolute inset-0 inline-flex items-center justify-center gap-2 rounded-lg border border-poke-gray-200 dark:border-poke-gray-600',
+          'bg-transparent px-3 text-xs font-medium text-poke-gray-700 dark:text-poke-gray-200',
+          'pointer-events-none select-none',
+          loading && 'opacity-50'
         )}
+        aria-hidden="true"
       >
         {loading ? (
           <>
@@ -103,7 +67,28 @@ GOOGLE_CLIENT_ID=tu-id.apps.googleusercontent.com`}
             <span>{t('auth.continueWithGoogle')}</span>
           </>
         )}
-      </button>
+      </div>
+
+      {!loading && (
+        <div className="absolute inset-0 z-10 overflow-hidden opacity-[0.011]">
+          <GoogleLogin
+            onSuccess={(response: CredentialResponse) => {
+              if (response.credential) {
+                void onSuccess(response.credential);
+              } else {
+                onError?.(t('auth.googleNoCredential'));
+              }
+            }}
+            onError={() => onError?.(t('auth.googleConnectionError'))}
+            theme="outline"
+            size="large"
+            shape="rectangular"
+            text="continue_with"
+            width={GOOGLE_BUTTON_WIDTH}
+            locale={i18n.language.startsWith('en') ? 'en' : 'es'}
+          />
+        </div>
+      )}
     </div>
   );
 }

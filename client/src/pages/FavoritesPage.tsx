@@ -6,6 +6,7 @@ import { CardSkeleton } from '@/components/ui/Skeleton';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorBanner } from '@/components/ui/ErrorBanner';
 import { Button } from '@/components/ui/Button';
+import { PageHeader } from '@/components/ui/PageHeader';
 import { Link } from 'react-router-dom';
 
 export function FavoritesPage() {
@@ -36,12 +37,12 @@ export function FavoritesPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">{t('favorites.title')}</h1>
+      <PageHeader title={t('favorites.title')} />
 
       {error && <ErrorBanner message={(error as Error).message} />}
 
       {isLoading ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="card-grid">
           {Array.from({ length: 4 }).map((_, i) => <CardSkeleton key={i} />)}
         </div>
       ) : !data?.length ? (
@@ -51,7 +52,7 @@ export function FavoritesPage() {
           action={<Link to="/cards"><Button>{t('wishlist.searchCards')}</Button></Link>}
         />
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="card-grid">
           {data.map((item) =>
             item.card ? (
               <PokemonCardTile

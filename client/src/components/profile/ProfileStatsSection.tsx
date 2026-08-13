@@ -53,11 +53,11 @@ export function ProfileStatsSection() {
 
   return (
     <div className="space-y-6">
-      <div className="grid lg:grid-cols-2 gap-6">
+      <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
         {data.byRarity.length > 0 && (
-          <Card className="p-6">
-            <h2 className="font-semibold mb-4">{t('profile.byRarity')}</h2>
-            <ResponsiveContainer width="100%" height={250}>
+          <Card className="p-4 sm:p-6">
+            <h2 className="font-semibold mb-4 text-sm sm:text-base">{t('profile.byRarity')}</h2>
+            <ResponsiveContainer width="100%" height={220}>
               <PieChart>
                 <Pie data={data.byRarity} dataKey="count" nameKey="name" cx="50%" cy="50%" outerRadius={80} label>
                   {data.byRarity.map((_, i) => (
@@ -71,11 +71,11 @@ export function ProfileStatsSection() {
         )}
 
         {data.byType.length > 0 && (
-          <Card className="p-6">
-            <h2 className="font-semibold mb-4">{t('profile.byType')}</h2>
-            <ResponsiveContainer width="100%" height={250}>
+          <Card className="p-4 sm:p-6">
+            <h2 className="font-semibold mb-4 text-sm sm:text-base">{t('profile.byType')}</h2>
+            <ResponsiveContainer width="100%" height={220}>
               <BarChart data={data.byType}>
-                <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+                <XAxis dataKey="name" tick={{ fontSize: 10 }} interval={0} angle={-25} textAnchor="end" height={60} />
                 <YAxis />
                 <Tooltip />
                 <Bar dataKey="count" fill="#EE1515" radius={[4, 4, 0, 0]} />
@@ -86,13 +86,13 @@ export function ProfileStatsSection() {
       </div>
 
       {data.setProgress.length > 0 && (
-        <Card className="p-6">
-          <h2 className="font-semibold mb-4">{t('profile.setProgress')}</h2>
-          <div className="space-y-4 max-h-96 overflow-y-auto pr-1">
+        <Card className="p-4 sm:p-6">
+          <h2 className="font-semibold mb-4 text-sm sm:text-base">{t('profile.setProgress')}</h2>
+          <div className="space-y-4 max-h-72 sm:max-h-96 overflow-y-auto pr-1">
             {data.setProgress.map((set) => (
               <div key={set.setId}>
-                <div className="flex justify-between text-sm mb-1">
-                  <span>{set.setName}</span>
+                <div className="flex flex-col gap-0.5 sm:flex-row sm:justify-between text-sm mb-1">
+                  <span className="font-medium break-words">{set.setName}</span>
                   <span className="text-poke-gray-500">
                     {set.owned}/{set.total} ({set.percentage}%)
                   </span>

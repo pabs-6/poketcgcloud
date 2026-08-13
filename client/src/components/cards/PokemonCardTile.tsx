@@ -74,13 +74,13 @@ export function PokemonCardTile({
 
         </div>
 
-        <div className="p-3 space-y-2">
+        <div className="p-2.5 sm:p-3 space-y-1.5 sm:space-y-2">
 
-          <h3 className="font-semibold text-poke-black dark:text-poke-white truncate">{card.name}</h3>
+          <h3 className="font-semibold text-sm sm:text-base text-poke-black dark:text-poke-white truncate">{card.name}</h3>
 
           <div className="flex flex-wrap gap-1">
 
-            <Badge>{card.set.name}</Badge>
+            <Badge className="max-w-[85%] truncate">{card.set.name}</Badge>
 
             {card.rarity && <Badge variant="red">{card.rarity}</Badge>}
 

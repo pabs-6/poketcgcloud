@@ -26,7 +26,7 @@ export function PasswordInput({ label, error, className, id, ...props }: Passwor
           id={inputId}
           type={visible ? 'text' : 'password'}
           className={cn(
-            'w-full rounded-lg border border-poke-gray-200 dark:border-poke-gray-500 bg-white dark:bg-poke-gray-800 py-2 pl-3 pr-10 text-poke-black dark:text-poke-white placeholder:text-poke-gray-500 focus:border-poke-red focus:outline-none focus:ring-1 focus:ring-poke-red transition-colors',
+            'w-full rounded-lg border border-poke-gray-200 dark:border-poke-gray-500 bg-white dark:bg-poke-gray-800 py-2.5 pl-3 pr-10 min-h-[44px] text-base sm:text-sm text-poke-black dark:text-poke-white placeholder:text-poke-gray-500 focus:border-poke-red focus:outline-none focus:ring-1 focus:ring-poke-red transition-colors',
             error && 'border-red-500',
             className
           )}

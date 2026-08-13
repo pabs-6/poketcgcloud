@@ -44,8 +44,8 @@ export function CardDetailPage() {
   const links = getExternalLinks(card);
 
   return (
-    <div className="grid md:grid-cols-2 gap-8">
-      <Card className="p-4 flex flex-col items-center justify-center gap-3">
+    <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
+      <Card className="p-3 sm:p-4 flex flex-col items-center justify-center gap-3">
         <CardImage
           src={card.images.large}
           alt={card.name}
@@ -53,7 +53,7 @@ export function CardDetailPage() {
           tcgplayerUrl={links.tcgplayer}
           cardmarketUrl={links.cardmarket}
           priority
-          className="max-h-[500px] w-full object-contain"
+          className="max-h-[min(70vh,500px)] w-full object-contain"
         />
         {isUnreliableSetImage(card.set.id) && (
           <p className="text-xs text-poke-gray-500 text-center max-w-xs">
@@ -62,9 +62,9 @@ export function CardDetailPage() {
         )}
       </Card>
 
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6 min-w-0">
         <div>
-          <h1 className="text-3xl font-bold mb-2">{card.name}</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-2 break-words">{card.name}</h1>
           <div className="flex flex-wrap gap-2 mb-4">
             <Badge>{card.set.name}</Badge>
             {card.rarity && <Badge variant="red">{card.rarity}</Badge>}
@@ -110,7 +110,7 @@ export function CardDetailPage() {
         {(card.weaknesses?.length || card.resistances?.length) && (
           <Card className="p-4">
             <h2 className="font-semibold mb-3">{t('cards.weaknessesResistances')}</h2>
-            <div className="grid grid-cols-2 gap-4 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
               {card.weaknesses && (
                 <div>
                   <p className="font-medium mb-1">{t('cards.weaknesses')}</p>

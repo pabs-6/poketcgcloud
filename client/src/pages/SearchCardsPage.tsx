@@ -12,7 +12,7 @@ import { Select } from '@/components/ui/Select';
 import { Button } from '@/components/ui/Button';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { StatCard } from '@/components/ui/StatCard';
-import { FilterIcon } from '@/components/icons/Icons';
+import { FilterSidebar } from '@/components/ui/FilterSidebar';
 import { POKEMON_TYPES, RARITIES } from '@/utils';
 
 export function SearchCardsPage() {
@@ -88,7 +88,7 @@ export function SearchCardsPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       <PageHeader
         title={t('cards.searchTitle')}
         description={t('cards.searchDesc')}
@@ -98,18 +98,13 @@ export function SearchCardsPage() {
         )}
       </PageHeader>
 
-      <div className="grid gap-8 xl:grid-cols-[300px_1fr]">
-        <aside className="glass-panel h-fit space-y-4 p-5 xl:sticky xl:top-24">
-          <div className="flex items-center justify-between">
-            <h2 className="flex items-center gap-2 font-semibold">
-              <FilterIcon className="h-4 w-4 text-poke-red" />
-              {t('cards.filters')}
-            </h2>
-            <button type="button" onClick={clearFilters} className="text-xs font-medium text-poke-red hover:underline">
-              {t('cards.clear')}
-            </button>
-          </div>
-
+      <div className="grid gap-4 sm:gap-6 lg:grid-cols-[minmax(0,280px)_1fr] xl:grid-cols-[minmax(0,300px)_1fr] lg:gap-8">
+        <FilterSidebar
+          title={t('cards.filters')}
+          clearLabel={t('cards.clear')}
+          onClear={clearFilters}
+          breakpoint="lg"
+        >
           <Input label={t('cards.name')} placeholder={t('cards.namePlaceholder')} value={name} onChange={(e) => { setName(e.target.value); setPage(1); }} />
           <Select label={t('cards.set')} value={set} onChange={(e) => { setSet(e.target.value); setPage(1); }}>
             <option value="">{t('cards.allF')}</option>
@@ -148,9 +143,9 @@ export function SearchCardsPage() {
             <option value="-hp">{t('cards.sortHpHigh')}</option>
             <option value="hp">{t('cards.sortHpLow')}</option>
           </Select>
-        </aside>
+        </FilterSidebar>
 
-        <section className="space-y-6 min-w-0">
+        <section className="space-y-4 sm:space-y-6 min-w-0">
           {isError && error && (
             <div className="space-y-3">
               <ErrorBanner message={(error as Error).message} />
@@ -167,27 +162,27 @@ export function SearchCardsPage() {
           )}
 
           {isLoading ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-4">
+            <div className="card-grid">
               {Array.from({ length: 12 }).map((_, i) => <CardSkeleton key={i} />)}
             </div>
           ) : data?.cards.length === 0 ? (
             <EmptyState title={t('cards.noResults')} description={t('cards.noResultsDesc')} action={<Button onClick={clearFilters}>{t('cards.clearFilters')}</Button>} />
           ) : (
             <>
-              <div className="flex items-center justify-between text-sm text-poke-gray-500">
-                <span>
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between text-xs sm:text-sm text-poke-gray-500">
+                <span className="leading-relaxed">
                   {t('cards.showing', { count: data?.count, total: data?.totalCount.toLocaleString(locale) })}
                   {data?.priceFiltered && t('cards.priceFiltered')}
                   {isFetching && !isLoading && t('cards.updating')}
                 </span>
-                <span>
+                <span className="shrink-0">
                   {totalPages > 0
                     ? t('cards.pageOf', { page, total: totalPages })
                     : t('cards.page', { page })}
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-4">
+              <div className="card-grid">
                 {data?.cards.map((card, index) => (
                   <PokemonCardTile
                     key={card.id}
@@ -199,9 +194,9 @@ export function SearchCardsPage() {
               </div>
 
               {totalPages > 1 && (
-                <div className="flex items-center justify-center gap-4 pt-4">
-                  <Button variant="secondary" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>{t('cards.previous')}</Button>
-                  <Button variant="secondary" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>{t('cards.next')}</Button>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2 sm:gap-4 pt-2 sm:pt-4">
+                  <Button variant="secondary" disabled={page <= 1} onClick={() => setPage((p) => p - 1)} className="w-full sm:w-auto">{t('cards.previous')}</Button>
+                  <Button variant="secondary" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)} className="w-full sm:w-auto">{t('cards.next')}</Button>
                 </div>
               )}
             </>

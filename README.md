@@ -87,24 +87,46 @@ npm run dev
 
 1. Crear cluster gratuito en [MongoDB Atlas](https://www.mongodb.com/atlas)
 2. Obtener connection string y configurar `MONGODB_URI`
-3. Whitelist IP de Railway (o `0.0.0.0/0` para desarrollo)
+3. Whitelist IP `0.0.0.0/0` (o la IP de Render/Railway) en Network Access
 
-### Backend (Railway)
+### Backend (Railway o Render)
+
+#### Opción A — Railway (de pago tras el trial)
+
+Si tu trial de Railway ha terminado, necesitas el plan **Hobby (~5 $/mes)** o usa Render (gratis con limitaciones).
 
 1. Conectar repo en [Railway](https://railway.app)
-2. Configurar variables de entorno:
+2. Configurar variables de entorno (ver abajo)
+3. Railway usará `railway.toml` para el start command
+
+#### Opción B — Render (gratis)
+
+1. Cuenta en [Render](https://render.com)
+2. **New → Web Service** → conectar tu repo GitHub
+3. Ajustes:
+   - **Root Directory:** vacío (raíz del repo)
+   - **Build Command:** `npm install && npm run build -w server`
+   - **Start Command:** `npm run start -w server`
+   - **Plan:** Free
+4. Variables de entorno (Environment):
 
 ```env
-PORT=5000
+PORT=10000
+NODE_ENV=production
 MONGODB_URI=mongodb+srv://...
 JWT_SECRET=<genera-un-secreto-seguro>
 JWT_EXPIRES_IN=7d
 POKEMON_TCG_API_KEY=<tu-api-key>
+GOOGLE_CLIENT_ID=<opcional>
 CORS_ORIGIN=https://tu-app.vercel.app
-NODE_ENV=production
 ```
 
-3. Railway usará `railway.toml` para el start command
+5. La URL será algo como `https://pokebinder-api.onrender.com`
+6. En **Vercel**, pon `VITE_API_URL=https://pokebinder-api.onrender.com/api`
+
+> **Free tier Render:** el servicio se **duerme** tras ~15 min sin tráfico. La primera petición tarda 30–60 s (cold start). Para producción real, Railway Hobby o Render paid evitan eso.
+
+También puedes usar el archivo `render.yaml` del repo con **New → Blueprint**.
 
 ### Frontend (Vercel)
 
@@ -112,7 +134,7 @@ NODE_ENV=production
 2. **Ajustes del proyecto** (Settings → General → Build & Development):
    - **Root Directory:** vacío (raíz del repo, **no** `client`)
    - **Framework Preset:** Other (o dejar que use `vercel.json`)
-   - **Build Command:** `npm run vercel-build` (o dejar vacío si usa `vercel.json`)
+   - **Build Command:** `npm run vercel-build` (solo frontend, **no** `npm run build`)
    - **Output Directory:** `client/dist`
    - **Install Command:** `npm install`
 3. Variables de entorno:
@@ -123,6 +145,8 @@ VITE_GOOGLE_CLIENT_ID=tu-client-id.apps.googleusercontent.com
 ```
 
 4. Redeploy tras guardar los ajustes
+
+> **Build falla con errores de `@types/express` / `Cannot find name 'fetch'`:** suele ser `NODE_ENV=production` durante el install, que omite devDependencies. El repo incluye `.npmrc` con `include=dev`. En Render, no hace falta duplicar `NODE_ENV=production` en build — solo en runtime.
 
 > **404 NOT_FOUND en Vercel:** casi siempre es Root Directory = `client` con Output = `client/dist` (busca una carpeta que no existe). Deja Root Directory en la raíz del repo o, si usas `client` como raíz, Output Directory debe ser solo `dist`.
 

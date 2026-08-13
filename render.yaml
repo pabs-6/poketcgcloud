@@ -1,0 +1,31 @@
+# Despliegue del backend en Render (plan free)
+# https://render.com — conectar repo → New Web Service → Blueprint o manual
+#
+# Manual (monorepo, raíz del repo):
+#   Build:  npm install && npm run build -w server
+#   Start:  npm run start -w server
+#   Health: /api/health
+
+services:
+  - type: web
+    name: pokebinder-api
+    runtime: node
+    plan: free
+    buildCommand: NPM_CONFIG_PRODUCTION=false npm install && npm run build -w server
+    startCommand: npm run start -w server
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: CORS_ORIGIN
+        sync: false
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: POKEMON_TCG_API_KEY
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false

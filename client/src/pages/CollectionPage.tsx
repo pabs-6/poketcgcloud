@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { StatCard } from '@/components/ui/StatCard';
-import { FilterIcon } from '@/components/icons/Icons';
+import { FilterSidebar } from '@/components/ui/FilterSidebar';
 import type { CollectionItem, CardCondition } from '@/types';
 import { RARITIES } from '@/utils';
 import { getMarketPrice } from '@/utils/cardHelpers';
@@ -140,25 +140,22 @@ export function CollectionPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       <PageHeader
         title={t('collection.title')}
         description={t('collection.desc')}
       >
-        <Link to="/cards"><Button variant="secondary">{t('collection.addCards')}</Button></Link>
+        <Link to="/cards" className="w-full sm:w-auto"><Button variant="secondary" className="w-full sm:w-auto">{t('collection.addCards')}</Button></Link>
       </PageHeader>
 
       {error && <ErrorBanner message={(error as Error).message} />}
 
-      <div className="grid gap-8 xl:grid-cols-[280px_1fr]">
-        <aside className="glass-panel h-fit space-y-4 p-5 xl:sticky xl:top-24">
-          <div className="flex items-center justify-between">
-            <h2 className="flex items-center gap-2 font-semibold text-sm">
-              <FilterIcon className="h-4 w-4 text-poke-red" />
-              {t('collection.filterTitle')}
-            </h2>
-            <button type="button" onClick={clearFilters} className="text-xs text-poke-red hover:underline">{t('cards.clear')}</button>
-          </div>
+      <div className="grid gap-4 sm:gap-6 lg:grid-cols-[minmax(0,280px)_1fr] lg:gap-8">
+        <FilterSidebar
+          title={t('collection.filterTitle')}
+          clearLabel={t('cards.clear')}
+          onClear={clearFilters}
+        >
           <Input label={t('cards.name')} placeholder={t('collection.searchPlaceholder')} value={search} onChange={(e) => setSearch(e.target.value)} />
           <Select label={t('cards.set')} value={setFilter} onChange={(e) => setSetFilter(e.target.value)}>
             <option value="">{t('cards.allF')}</option>
@@ -176,15 +173,15 @@ export function CollectionPage() {
             <option value="">{t('cards.allF')}</option>
             {Object.entries(conditionLabels).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
           </Select>
-          <label className="flex items-center gap-2 text-sm">
-            <input type="checkbox" checked={foilOnly} onChange={(e) => setFoilOnly(e.target.checked)} />
+          <label className="flex items-center gap-2 text-sm min-h-[44px]">
+            <input type="checkbox" checked={foilOnly} onChange={(e) => setFoilOnly(e.target.checked)} className="h-4 w-4" />
             {t('collection.foilOnly')}
           </label>
-        </aside>
+        </FilterSidebar>
 
-        <section className="space-y-6">
+        <section className="space-y-4 sm:space-y-6 min-w-0">
           {!isLoading && data && data.length > 0 && (
-            <div className="grid gap-3 sm:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               <StatCard label={t('collection.cardsShown')} value={totalQty} hint={t('collection.uniqueTypes', { count: filtered.length })} />
               <StatCard label={t('collection.filteredValue')} value={formatPrice(albumValue)} hint={t('collection.marketEstimate')} />
               <StatCard label={t('collection.totalInAlbum')} value={data.reduce((s, i) => s + i.quantity, 0)} />
@@ -192,7 +189,7 @@ export function CollectionPage() {
           )}
 
           {isLoading ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-4">
+            <div className="card-grid">
               {Array.from({ length: 8 }).map((_, i) => <CardSkeleton key={i} />)}
             </div>
           ) : !data?.length ? (
@@ -204,21 +201,21 @@ export function CollectionPage() {
           ) : filtered.length === 0 ? (
             <EmptyState title={t('collection.noFilterResults')} description={t('collection.noFilterDesc')} action={<Button variant="secondary" onClick={clearFilters}>{t('cards.clearFilters')}</Button>} />
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-4">
+            <div className="card-grid">
               {filtered.map((item) =>
                 item.card ? (
                   <PokemonCardTile
                     key={item.id}
                     card={item.card}
                     actions={
-                      <>
-                        <span className="text-xs text-poke-gray-500">
+                      <div className="flex flex-wrap items-center justify-center gap-2 w-full">
+                        <span className="w-full text-center text-xs text-poke-gray-500">
                           ×{item.quantity} · {conditionLabels[item.condition]}
                           {item.isFoil && ` · ${t('collection.foil')}`}
                         </span>
                         <Button size="sm" variant="secondary" onClick={() => openEdit(item)}>{t('collection.edit')}</Button>
-                        <Button size="sm" variant="danger" onClick={() => deleteMutation.mutate(item.id)}>×</Button>
-                      </>
+                        <Button size="sm" variant="danger" onClick={() => deleteMutation.mutate(item.id)} aria-label={t('favorites.remove')}>×</Button>
+                      </div>
                     }
                   />
                 ) : null

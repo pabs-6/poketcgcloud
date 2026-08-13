@@ -3,8 +3,12 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
   body {
-    @apply bg-poke-gray-100 text-poke-black antialiased;
+    @apply bg-poke-gray-100 text-poke-black antialiased overflow-x-hidden;
     background-image:
       radial-gradient(circle at 0% 0%, rgba(238, 21, 21, 0.06), transparent 35%),
       radial-gradient(circle at 100% 100%, rgba(26, 26, 26, 0.04), transparent 30%);
@@ -29,5 +33,17 @@
 
   .nav-link {
     @apply flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors;
+  }
+
+  .card-grid {
+    @apply grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-4;
+  }
+
+  .safe-area-pb {
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  }
+
+  .safe-area-pt {
+    padding-top: env(safe-area-inset-top);
   }
 }

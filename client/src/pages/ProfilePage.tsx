@@ -39,17 +39,17 @@ export function ProfilePage() {
   if (!user) return null;
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-8 sm:space-y-10">
       <PageHeader
         title={t('profile.title')}
         description={t('profile.desc')}
       >
-        <Link to="/collection">
-          <Button>{t('profile.goToAlbum')}</Button>
+        <Link to="/collection" className="w-full sm:w-auto">
+          <Button className="w-full sm:w-auto">{t('profile.goToAlbum')}</Button>
         </Link>
       </PageHeader>
 
-      <div className="grid gap-6 lg:grid-cols-[240px_1fr]">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,240px)_1fr]">
         <Card className="flex flex-col items-center p-6 text-center h-fit">
           <div className="relative">
             {user.avatar ? (
@@ -96,7 +96,7 @@ export function ProfilePage() {
         </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         <Link to="/cards" className="glass-panel card-hover p-5 block">
           <p className="font-semibold text-poke-red">{t('profile.galleryQuick')}</p>
           <p className="text-sm text-poke-gray-500 mt-1">{t('profile.galleryQuickDesc')}</p>
@@ -112,7 +112,7 @@ export function ProfilePage() {
       </div>
 
       <section id="estadisticas" className="space-y-4">
-        <h2 className="text-2xl font-bold">{t('profile.statsTitle')}</h2>
+        <h2 className="text-xl sm:text-2xl font-bold">{t('profile.statsTitle')}</h2>
         <ProfileStatsSection />
       </section>
 

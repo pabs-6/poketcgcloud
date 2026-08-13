@@ -50,12 +50,12 @@ export function LoginPage() {
   };
 
   return (
-    <div className="grid min-h-[75vh] gap-8 lg:grid-cols-2 lg:gap-12">
-      <div className="flex flex-col justify-center space-y-6">
+    <div className="grid min-h-[60vh] gap-6 lg:min-h-[75vh] lg:grid-cols-2 lg:gap-12">
+      <div className="flex flex-col justify-center space-y-4 sm:space-y-6 order-2 lg:order-1">
         <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-poke-red/10 text-poke-red">
           <CardsIcon className="h-6 w-6" />
         </div>
-        <h1 className="text-3xl font-bold tracking-tight md:text-4xl">{t('auth.welcomeBack')}</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight md:text-4xl">{t('auth.welcomeBack')}</h1>
         <p className="max-w-md text-poke-gray-500 leading-relaxed">
           {t('auth.loginSubtitle')}
         </p>
@@ -66,7 +66,7 @@ export function LoginPage() {
         </ul>
       </div>
 
-      <div className="glass-panel flex flex-col justify-center p-8">
+      <div className="glass-panel flex flex-col justify-center p-5 sm:p-8 order-1 lg:order-2">
         <h2 className="text-xl font-semibold mb-6">{t('auth.loginTitle')}</h2>
         {error && <ErrorBanner message={error} onDismiss={() => setError('')} />}
 

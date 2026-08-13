@@ -28,17 +28,23 @@ export function Modal({ open, onClose, title, children, className }: ModalProps)
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4">
+      <div className="absolute inset-0 bg-black/50" onClick={onClose} aria-hidden="true" />
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
         className={cn(
-          'relative w-full max-w-md rounded-xl bg-white dark:bg-poke-gray-800 p-6 shadow-xl',
+          'relative w-full max-w-md max-h-[min(90vh,720px)] overflow-y-auto',
+          'rounded-t-2xl sm:rounded-xl bg-white dark:bg-poke-gray-800 p-5 sm:p-6 shadow-xl safe-area-pb',
           className
         )}
       >
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-poke-black dark:text-poke-white">{title}</h2>
-          <Button variant="ghost" size="sm" onClick={onClose} aria-label={t('common.close')}>
+        <div className="mb-4 flex items-start justify-between gap-3">
+          <h2 id="modal-title" className="text-lg font-semibold text-poke-black dark:text-poke-white pr-2">
+            {title}
+          </h2>
+          <Button variant="ghost" size="sm" onClick={onClose} aria-label={t('common.close')} className="shrink-0 min-h-[40px] min-w-[40px]">
             ✕
           </Button>
         </div>

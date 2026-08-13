@@ -19,7 +19,7 @@ export function Input({ label, error, className, id, ...props }: InputProps) {
       <input
         id={inputId}
         className={cn(
-          'w-full rounded-lg border border-poke-gray-200 dark:border-poke-gray-500 bg-white dark:bg-poke-gray-800 px-3 py-2 text-poke-black dark:text-poke-white placeholder:text-poke-gray-500 focus:border-poke-red focus:outline-none focus:ring-1 focus:ring-poke-red transition-colors',
+          'w-full rounded-lg border border-poke-gray-200 dark:border-poke-gray-500 bg-white dark:bg-poke-gray-800 px-3 py-2.5 min-h-[44px] text-base sm:text-sm text-poke-black dark:text-poke-white placeholder:text-poke-gray-500 focus:border-poke-red focus:outline-none focus:ring-1 focus:ring-poke-red transition-colors',
           error && 'border-red-500',
           className
         )}

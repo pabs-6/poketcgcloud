@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { env } from './config/env.js';
+import { parseCorsOrigins, isCorsOriginAllowed } from './config/cors.js';
 import healthRoutes from './routes/healthRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import cardRoutes from './routes/cardRoutes.js';
@@ -12,9 +13,21 @@ import statsRoutes from './routes/statsRoutes.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 
 const app = express();
+const corsOrigins = parseCorsOrigins(env.CORS_ORIGIN);
 
 app.use(helmet());
-app.use(cors({ origin: env.CORS_ORIGIN, credentials: true }));
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (isCorsOriginAllowed(origin, corsOrigins)) {
+        callback(null, true);
+      } else {
+        callback(null, false);
+      }
+    },
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.use('/api/health', healthRoutes);

@@ -17,7 +17,10 @@ const envSchema = z.object({
   JWT_EXPIRES_IN: z.string().default('7d'),
   POKEMON_TCG_API_KEY: z.string().optional(),
   GOOGLE_CLIENT_ID: z.string().optional(),
-  CORS_ORIGIN: z.string().default('http://localhost:5173'),
+  CORS_ORIGIN: z
+    .string()
+    .default('http://localhost:5173')
+    .describe('Origen(es) del frontend, separados por coma. Ej: https://app.vercel.app'),
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
 });
 

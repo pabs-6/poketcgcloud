@@ -46,4 +46,31 @@
   .safe-area-pt {
     padding-top: env(safe-area-inset-top);
   }
+
+  .panel-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(238, 21, 21, 0.28) transparent;
+  }
+
+  .panel-scroll::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .panel-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .panel-scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(238, 21, 21, 0.28);
+    border-radius: 9999px;
+  }
+
+  html.dark .panel-scroll {
+    scrollbar-color: rgba(238, 21, 21, 0.45) transparent;
+  }
+
+  html.dark .panel-scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(238, 21, 21, 0.45);
+  }
 }

@@ -12,6 +12,7 @@ import { TypeMatchups } from '@/components/games/TypeMatchups';
 import { EvolutionChain } from '@/components/games/EvolutionChain';
 import { PokemonCategoryBadges, PokemonCategoryLegend } from '@/components/games/PokemonCategoryBadge';
 import { PokemonSprite } from '@/components/games/PokemonSprite';
+import { PokemonMovesList } from '@/components/games/PokemonMovesList';
 import { gamesApi } from '@/services/api';
 import { useShinyMode } from '@/hooks/useShinyMode';
 
@@ -135,83 +136,17 @@ export function PokemonDetailPage() {
         <p className="text-sm text-poke-gray-500 mb-4">
           {game ? t('games.movesForGame', { game }) : t('games.highlightedMovesDesc')}
         </p>
-        <div className="space-y-2 sm:hidden">
-          {data.highlightedMoves.map((move) => (
-            <div
-              key={move.name}
-              className="rounded-xl border border-poke-gray-200 dark:border-poke-gray-700 p-3 flex flex-wrap items-center gap-2"
-            >
-              <span className="font-medium w-full">{move.name}</span>
-              <TypeBadge type={move.type} />
-              <span className="text-xs text-poke-gray-500">{t('games.power')}: <span className="font-mono text-poke-black dark:text-poke-white">{move.power ?? '—'}</span></span>
-              <span className="text-xs capitalize text-poke-gray-500">{move.category.replace('-', ' ')}</span>
-            </div>
-          ))}
-        </div>
-        <div className="hidden sm:block overflow-x-auto">
-          <table className="w-full text-sm min-w-[480px]">
-            <thead>
-              <tr className="border-b border-poke-gray-200 dark:border-poke-gray-700 text-left text-poke-gray-500">
-                <th className="py-2 pr-4">{t('games.move')}</th>
-                <th className="py-2 pr-4">{t('games.type')}</th>
-                <th className="py-2 pr-4">{t('games.power')}</th>
-                <th className="py-2">{t('games.category')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.highlightedMoves.map((move) => (
-                <tr key={move.name} className="border-b border-poke-gray-100 dark:border-poke-gray-800">
-                  <td className="py-2 pr-4 font-medium">{move.name}</td>
-                  <td className="py-2 pr-4"><TypeBadge type={move.type} /></td>
-                  <td className="py-2 pr-4 font-mono">{move.power ?? '—'}</td>
-                  <td className="py-2 capitalize">{move.category.replace('-', ' ')}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <PokemonMovesList moves={data.highlightedMoves} />
       </section>
 
       {data.moves.length > data.highlightedMoves.length && (
-        <details className="glass-panel p-5">
-          <summary className="cursor-pointer font-semibold min-h-[44px] flex items-center">{t('games.allMoves')} ({data.moves.length})</summary>
-          <div className="mt-4 max-h-80 overflow-y-auto space-y-2 sm:space-y-0">
-            <div className="space-y-2 sm:hidden">
-              {data.moves.map((move, i) => (
-                <div
-                  key={`${move.name}-${i}-m`}
-                  className="rounded-xl border border-poke-gray-200 dark:border-poke-gray-700 p-3 flex flex-wrap items-center gap-2"
-                >
-                  <span className="font-medium w-full">{move.name}</span>
-                  <TypeBadge type={move.type} />
-                  <span className="text-xs text-poke-gray-500">{t('games.power')}: <span className="font-mono">{move.power ?? '—'}</span></span>
-                  <span className="text-xs capitalize">{move.method.replace('-', ' ')}</span>
-                  {move.level ? <span className="text-xs font-mono">Lv.{move.level}</span> : null}
-                </div>
-              ))}
-            </div>
-            <table className="hidden sm:table w-full text-sm min-w-[560px]">
-              <thead>
-                <tr className="border-b border-poke-gray-200 dark:border-poke-gray-700 text-left text-poke-gray-500">
-                  <th className="py-2 pr-4">{t('games.move')}</th>
-                  <th className="py-2 pr-4">{t('games.type')}</th>
-                  <th className="py-2 pr-4">{t('games.power')}</th>
-                  <th className="py-2 pr-4">{t('games.method')}</th>
-                  <th className="py-2">{t('games.level')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.moves.map((move, i) => (
-                  <tr key={`${move.name}-${i}`} className="border-b border-poke-gray-100 dark:border-poke-gray-800">
-                    <td className="py-2 pr-4 font-medium">{move.name}</td>
-                    <td className="py-2 pr-4"><TypeBadge type={move.type} /></td>
-                    <td className="py-2 pr-4 font-mono">{move.power ?? '—'}</td>
-                    <td className="py-2 pr-4 capitalize text-xs">{move.method.replace('-', ' ')}</td>
-                    <td className="py-2 font-mono">{move.level || '—'}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        <details className="glass-panel group">
+          <summary className="cursor-pointer list-none px-5 py-4 min-h-[44px] flex items-center justify-between gap-3 font-semibold marker:content-none">
+            <span>{t('games.allMoves')} ({data.moves.length})</span>
+            <span className="text-poke-gray-400 text-sm transition-transform group-open:rotate-180">▼</span>
+          </summary>
+          <div className="border-t border-poke-gray-200 dark:border-poke-gray-700 px-5 py-4">
+            <PokemonMovesList moves={data.moves} showLearnInfo />
           </div>
         </details>
       )}

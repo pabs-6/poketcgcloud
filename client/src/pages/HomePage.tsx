@@ -2,7 +2,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { useTranslation, Trans } from 'react-i18next';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/Button';
-import { SearchIcon, CollectionIcon, ChartIcon, CardsIcon } from '@/components/icons/Icons';
+import { SearchIcon, CollectionIcon, ChartIcon, CardsIcon, PokedexIcon } from '@/components/icons/Icons';
 
 export function HomePage() {
   const { t } = useTranslation();
@@ -49,7 +49,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="grid gap-4 sm:gap-6 md:grid-cols-2">
+      <section className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
         <Link to="/cards" className="glass-panel card-hover group p-5 sm:p-8 block">
           <SearchIcon className="h-8 w-8 sm:h-10 sm:w-10 text-poke-red mb-3 sm:mb-4" />
           <h2 className="text-xl sm:text-2xl font-bold mb-2 group-hover:text-poke-red transition-colors">{t('home.galleryTitle')}</h2>
@@ -66,6 +66,15 @@ export function HomePage() {
             {t('home.albumDesc')}
           </p>
           <p className="mt-4 text-sm font-semibold text-poke-red">{user ? t('home.albumLinkOpen') : t('home.albumLinkLogin')}</p>
+        </Link>
+
+        <Link to="/games/pokedex" className="glass-panel card-hover group p-5 sm:p-8 block md:col-span-2 lg:col-span-1">
+          <PokedexIcon className="h-8 w-8 sm:h-10 sm:w-10 text-poke-red mb-3 sm:mb-4" />
+          <h2 className="text-xl sm:text-2xl font-bold mb-2 group-hover:text-poke-red transition-colors">{t('home.gamesTitle')}</h2>
+          <p className="text-poke-gray-500 leading-relaxed">
+            {t('home.gamesDesc')}
+          </p>
+          <p className="mt-4 text-sm font-semibold text-poke-red">{t('home.gamesLink')}</p>
         </Link>
       </section>
 

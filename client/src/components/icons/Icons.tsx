@@ -169,3 +169,59 @@ export function GoogleIcon(props: IconProps) {
     </svg>
   );
 }
+
+export function GamepadIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" {...props}>
+      <rect x="2" y="6" width="20" height="12" rx="4" />
+      <path d="M8 12h4M10 10v4" strokeLinecap="round" />
+      <circle cx="16" cy="11" r="1" fill="currentColor" stroke="none" />
+      <circle cx="18" cy="13" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function PokedexIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" {...props}>
+      <rect x="3" y="3" width="18" height="18" rx="4" />
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 3v3M12 18v3" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function TeamIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" {...props}>
+      <circle cx="9" cy="7" r="3" />
+      <circle cx="17" cy="9" r="2.5" />
+      <circle cx="7" cy="16" r="2.5" />
+      <circle cx="16" cy="17" r="2.5" />
+      <path d="M11.5 9.5L15 8M9 13l-1 2.5M14 11l2 4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function MenuIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" {...props}>
+      <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function ShinyIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <path
+        d="M10.5 2.5 12.2 8.8 18.5 10.5 12.2 12.2 10.5 18.5 8.8 12.2 2.5 10.5 8.8 8.8 10.5 2.5Z"
+        fill="#EE1515"
+      />
+      <path
+        d="M16.8 13.2 17.7 16.1 20.6 17 17.7 17.9 16.8 20.8 15.9 17.9 13 17 15.9 16.1 16.8 13.2Z"
+        fill="#3B82F6"
+      />
+    </svg>
+  );
+}

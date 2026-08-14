@@ -76,3 +76,31 @@ export const favoritesApi = {
 export const statsApi = {
   get: () => apiClient.get<Stats>('/stats'),
 };
+
+export const gamesApi = {
+  getCatalog: (lang?: string) =>
+    apiClient.get<import('@/types/games').GamesCatalog>(`/games/catalog${lang ? `?lang=${lang}` : ''}`),
+  getPokedex: (params: { game?: string; generation?: string; national?: boolean; lang?: string }) => {
+    const query = new URLSearchParams();
+    if (params.game) query.set('game', params.game);
+    if (params.generation) query.set('generation', params.generation);
+    if (params.national) query.set('national', 'true');
+    if (params.lang) query.set('lang', params.lang);
+    return apiClient.get<import('@/types/games').PokedexListResult>(`/games/pokedex?${query.toString()}`);
+  },
+  getPokemon: (id: string | number, params?: { game?: string; lang?: string }) => {
+    const query = new URLSearchParams();
+    if (params?.game) query.set('game', params.game);
+    if (params?.lang) query.set('lang', params.lang);
+    const qs = query.toString();
+    return apiClient.get<import('@/types/games').PokemonDetail>(`/games/pokemon/${id}${qs ? `?${qs}` : ''}`);
+  },
+  getNatures: (lang?: string) =>
+    apiClient.get<import('@/types/games').NatureInfo[]>(`/games/natures${lang ? `?lang=${lang}` : ''}`),
+  getTeamsIndex: (lang?: string) =>
+    apiClient.get<import('@/types/games').TeamGameSummary[]>(`/games/teams${lang ? `?lang=${lang}` : ''}`),
+  getTeamsByGame: (gameSlug: string, lang?: string) =>
+    apiClient.get<import('@/types/games').TeamSummary[]>(`/games/teams/game/${gameSlug}${lang ? `?lang=${lang}` : ''}`),
+  getTeam: (id: string, lang?: string) =>
+    apiClient.get<import('@/types/games').TeamDetail>(`/games/teams/${id}${lang ? `?lang=${lang}` : ''}`),
+};

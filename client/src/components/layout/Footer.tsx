@@ -8,7 +8,7 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-8 sm:mt-12 border-t border-poke-gray-200 dark:border-poke-gray-800 py-6 sm:py-8 pb-24 md:pb-8">
+    <footer className="mt-8 sm:mt-12 border-t border-poke-gray-200 dark:border-poke-gray-800 py-6 sm:py-8 pb-28 lg:pb-8">
       <div className="mx-auto w-full max-w-[1600px] space-y-4 px-3 text-sm text-poke-gray-500 sm:px-4 lg:px-8">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <p>{t('footer.tagline')}</p>

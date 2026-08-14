@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { ErrorBanner } from '@/components/ui/ErrorBanner';
+import { BackLink } from '@/components/ui/BackLink';
 import { CardImage, isUnreliableSetImage } from '@/components/cards/CardImage';
 import { CardPrice } from '@/components/cards/CardPrice';
 import { CardQuickActions } from '@/components/cards/CardQuickActions';
@@ -26,7 +27,7 @@ export function CardDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="grid md:grid-cols-2 gap-8">
+      <div className="grid lg:grid-cols-2 gap-8">
         <Skeleton className="aspect-[2.5/3.5] w-full max-w-sm mx-auto" />
         <div className="space-y-4">
           <Skeleton className="h-8 w-2/3" />
@@ -38,13 +39,21 @@ export function CardDetailPage() {
   }
 
   if (error || !card) {
-    return <ErrorBanner message={t('cards.notFound')} />;
+    return (
+      <div className="space-y-4">
+        <BackLink fallbackTo="/cards" label={t('cards.backToGallery')} />
+        <ErrorBanner message={t('cards.notFound')} />
+      </div>
+    );
   }
 
   const links = getExternalLinks(card);
 
   return (
-    <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
+    <div className="space-y-4 sm:space-y-6">
+      <BackLink fallbackTo="/cards" label={t('cards.backToGallery')} />
+
+      <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
       <Card className="p-3 sm:p-4 flex flex-col items-center justify-center gap-3">
         <CardImage
           src={card.images.large}
@@ -130,6 +139,7 @@ export function CardDetailPage() {
             </div>
           </Card>
         )}
+      </div>
       </div>
     </div>
   );

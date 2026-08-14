@@ -1,3 +1,4 @@
+import { useRef, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GoogleLogin, type CredentialResponse } from '@react-oauth/google';
 import { GoogleIcon } from '@/components/icons/Icons';
@@ -10,7 +11,8 @@ interface GoogleSignInButtonProps {
 }
 
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID?.trim() ?? '';
-const GOOGLE_BUTTON_WIDTH = 240;
+const MIN_BUTTON_WIDTH = 200;
+const MAX_BUTTON_WIDTH = 400;
 
 export function isGoogleConfigured(): boolean {
   return clientId.length > 0;
@@ -18,6 +20,23 @@ export function isGoogleConfigured(): boolean {
 
 export function GoogleSignInButton({ onSuccess, onError, loading }: GoogleSignInButtonProps) {
   const { t, i18n } = useTranslation();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [buttonWidth, setButtonWidth] = useState(280);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const update = () => {
+      const next = Math.min(MAX_BUTTON_WIDTH, Math.max(MIN_BUTTON_WIDTH, Math.floor(el.clientWidth)));
+      setButtonWidth(next);
+    };
+
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   if (!isGoogleConfigured()) {
     return (
@@ -46,7 +65,7 @@ GOOGLE_CLIENT_ID=tu-id.apps.googleusercontent.com`}
   }
 
   return (
-    <div className="relative flex justify-center" style={{ width: GOOGLE_BUTTON_WIDTH, height: 40 }}>
+    <div ref={containerRef} className="relative mx-auto w-full max-w-[320px]" style={{ height: 44 }}>
       <div
         className={cn(
           'absolute inset-0 inline-flex items-center justify-center gap-2 rounded-lg border border-poke-gray-200 dark:border-poke-gray-600',
@@ -84,7 +103,7 @@ GOOGLE_CLIENT_ID=tu-id.apps.googleusercontent.com`}
             size="large"
             shape="rectangular"
             text="continue_with"
-            width={GOOGLE_BUTTON_WIDTH}
+            width={buttonWidth}
             locale={i18n.language.startsWith('en') ? 'en' : 'es'}
           />
         </div>

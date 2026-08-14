@@ -10,6 +10,7 @@ import collectionRoutes from './routes/collectionRoutes.js';
 import wishlistRoutes from './routes/wishlistRoutes.js';
 import favoriteRoutes from './routes/favoriteRoutes.js';
 import statsRoutes from './routes/statsRoutes.js';
+import gamesRoutes from './routes/gamesRoutes.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 
 const app = express();
@@ -42,6 +43,7 @@ app.use('/api/collection', collectionRoutes);
 app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/favorites', favoriteRoutes);
 app.use('/api/stats', statsRoutes);
+app.use('/api/games', gamesRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
